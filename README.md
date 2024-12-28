@@ -1,8 +1,13 @@
-
-
-Tôi sẽ tạo một README.md đầy đủ cho dự án của bạn:
-
-```markdown:README.md
+---
+title: VManhxGO
+emoji: 🎓
+colorFrom: blue
+colorTo: green
+sdk: gradio
+sdk_version: 4.19.2
+app_file: app.py
+pinned: false
+---
 # Hệ thống Tra cứu và Phân tích Điểm thi THPT Quốc gia
 
 ![Python](https://img.shields.io/badge/python-v3.9-blue.svg)
@@ -113,7 +118,6 @@ GET /api/top-students?block=<mã khối>
 ```
 Params:
 - block: A00, A01, B00, ...
-
 ## 📂 Cấu trúc Project
 
 ```
