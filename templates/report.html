@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Báo cáo điểm thi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <img src="{{ url_for('static', filename='logo.svg') }}" alt="Website Logo" class="logo">
+        <span class="header-title">VManh x Golden Owl Asia</span>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <h4 class="sidebar-heading">Menu</h4>
+        <ul class="list-unstyled">
+            <li><a href="/">Trang chủ</a></li>
+            <li><a href="/report-page">Báo cáo</a></li>
+            <li><a href="/top-students">Top 10</a></li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <p>
+                Chào mọi người, tôi là Nguyễn Văn Mạnh, một kỹ sư phần mềm và nhà phát triển web đến từ TP. Hồ Chí Minh. Tôi có niềm đam mê với việc biến những yêu cầu phức tạp thành các giải pháp web thân thiện và hiệu quả.
+            </p>
+            <a href="https://vanmanh-dev.id.vn/" target="_blank" class="personal-link">
+                Ghé thăm website của tôi
+            </a>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="main-content">
+        <div class="container">
+            <h1 class="text-center mb-4">Báo cáo phân loại điểm thi</h1>
+            
+            <!-- Phần lọc môn học -->
+            <div class="filter-section mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Chọn môn học</h5>
+                        <div class="subject-buttons">
+                            <button class="btn btn-outline-primary mb-2 mr-2 subject-btn active" data-subject="all">
+                                Tất cả các môn
+                            </button>
+                            {% for code, name in subjects.items() %}
+                            <button class="btn btn-outline-primary mb-2 mr-2 subject-btn" data-subject="{{ code }}">
+                                {{ name }}
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phần hiển thị biểu đồ -->
+            <div class="report-container">
+                <div class="chart-container">
+                    <div id="loadingSpinner" class="loading-spinner"></div>
+                    <p id="loadingText" class="loading-text">Đang tải báo cáo...</p>
+                    <img id="reportChart" src="{{ url_for('report', subject='all') }}" alt="Biểu đồ phân loại điểm" class="img-fluid" style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Menu toggle script
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // Khởi tạo các phần tử
+        const chartImg = document.getElementById('reportChart');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const loadingText = document.getElementById('loadingText');
+
+        // Hàm hiển thị loading
+        function showLoading() {
+            chartImg.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+            loadingText.style.display = 'block';
+        }
+
+        // Hàm ẩn loading
+        function hideLoading() {
+            loadingSpinner.style.display = 'none';
+            loadingText.style.display = 'none';
+            chartImg.style.display = 'block';
+        }
+
+        // Subject filter script với loading
+        document.querySelectorAll('.subject-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const subject = this.getAttribute('data-subject');
+                
+                // Hiển thị loading
+                showLoading();
+                
+                // Update active button state
+                document.querySelectorAll('.subject-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Tải hình mới
+                const newImage = new Image();
+                newImage.onload = function() {
+                    chartImg.src = this.src;
+                    hideLoading();
+                };
+                newImage.onerror = function() {
+                    // Xử lý khi tải hình thất bại
+                    loadingText.textContent = 'Không thể tải báo cáo. Vui lòng thử lại.';
+                };
+                newImage.src = `/report?subject=${subject}`;
+            });
+        });
+
+        // Xử lý loading khi tải trang
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hiển thị loading ngay khi trang được tải
+            showLoading();
+            
+            // Xử lý loading cho hình ảnh ban đầu
+            chartImg.onload = function() {
+                hideLoading();
+            };
+            chartImg.onerror = function() {
+                loadingText.textContent = 'Không thể tải báo cáo. Vui lòng thử lại.';
+            };
+        });
+    </script>
+</body>
+</html>

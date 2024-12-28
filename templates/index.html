@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tra cứu điểm thi THPT Quốc gia</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <img src="{{ url_for('static', filename='logo.svg') }}" alt="Website Logo" class="logo">
+        <span class="header-title">VManh x Golden Owl Asia</span>
+    </header>
+    <div class="sidebar" id="sidebar">
+        <h4 class="sidebar-heading">Menu</h4>
+        <ul class="list-unstyled">
+            <li><a href="/">Trang chủ</a></li>
+            <li><a href="/report-page">Báo cáo</a></li>
+            <li><a href="/top-students">Top 10</a></li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <p>
+                Chào mọi người, tôi là Nguyễn Văn Mạnh, một kỹ sư phần mềm và nhà phát triển web đến từ TP. Hồ Chí Minh. Tôi có niềm đam mê với việc biến những yêu cầu phức tạp thành các giải pháp web thân thiện và hiệu quả.
+            </p>
+            <a href="https://vanmanh-dev.id.vn/" target="_blank" class="personal-link">
+                Ghé thăm website của tôi
+            </a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+    <div class="main-content">
+        <div class="container">
+            <div class="container mt-5">
+                <h1 class="text-center">Tra cứu điểm thi THPT Quốc gia</h1>
+                <form action="/result" method="post" class="mt-4">
+                    <div class="form-group">
+                        <label for="sbd">Số báo danh:</label>
+                        <input type="text" id="sbd" name="sbd" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Tra cứu</button>
+                </form>
+                {% if student %}
+                <h2 class="mt-5">Kết quả tìm kiếm:</h2>
+                <table class="table table-bordered mt-3">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>SBD</th>
+                            <th>Toán</th>
+                            <th>Ngữ Văn</th>
+                            <th>Ngoại Ngữ</th>
+                            <th>Vật Lý</th>
+                            <th>Hóa Học</th>
+                            <th>Sinh Học</th>
+                            <th>Lịch Sử</th>
+                            <th>Địa Lý</th>
+                            <th>GDCD</th>
+                            <th>Mã Ngoại Ngữ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ student.sbd }}</td>
+                            <td>{{ student.toan }}</td>
+                            <td>{{ student.ngu_van }}</td>
+                            <td>{{ student.ngoai_ngu }}</td>
+                            <td>{{ student.vat_li }}</td>
+                            <td>{{ student.hoa_hoc }}</td>
+                            <td>{{ student.sinh_hoc }}</td>
+                            <td>{{ student.lich_su }}</td>
+                            <td>{{ student.dia_li }}</td>
+                            <td>{{ student.gdcd }}</td>
+                            <td>{{ student.ma_ngoai_ngu }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% elif no_result %}
+                <script>
+                    $(document).ready(function() {
+                        $('#noResultModal').modal('show');
+                    });
+                </script>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="noResultModal" tabindex="-1" aria-labelledby="noResultModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="noResultModalLabel">Thông báo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Không tìm thấy điểm của học sinh với SBD đã nhập.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+    </script>
+</body>
+</html>

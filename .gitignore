@@ -1,0 +1,21 @@
+# Ignore dataset folder
+dataset/diem_thi_thpt_2024.csv
+
+# Thêm một số pattern phổ biến khác
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Các file tạm
+*.log
+*.tmp
+
+# File hệ thống
+.DS_Store
+Thumbs.db 
