@@ -16,6 +16,11 @@ pinned: false
 
 Hệ thống web cho phép tra cứu điểm thi THPT Quốc gia, phân tích thống kê và xếp hạng học sinh theo khối thi. Được phát triển bởi [Nguyễn Văn Mạnh](https://vanmanh-dev.id.vn/).
 
+## 🌐 Demo
+
+Bạn có thể xem demo ứng dụng tại: [https://huggingface.co/spaces/manhteky123/VManhxGO](https://huggingface.co/spaces/manhteky123/VManhxGO)
+
+
 ## 🌟 Tính năng chính
 
 1. **Tra cứu điểm thi**
@@ -162,7 +167,6 @@ project/
 - 🌐 Website: [https://vanmanh-dev.id.vn/](https://vanmanh-dev.id.vn/)
 - 💼 Kỹ sư phần mềm tại TP. Hồ Chí Minh
 - 🎯 Chuyên môn: Web Development, Software Engineering
-
 
 ---
 Developed with ❤️ by Nguyễn Văn Mạnh
